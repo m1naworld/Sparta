@@ -1,12 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
+import dbprac
 
-headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+db = dbprac.db
+
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 data = requests.get('https://movie.naver.com/movie/sdb/rank/rmovie.naver?sel=pnt&date=20210829', headers=headers)
 
 soup = BeautifulSoup(data.text, 'html.parser')
 
-title = soup.select_one('#old_content > table > tbody > tr:nth-child(2) > td.title > div > a')
+# title = soup.select_one('#old_content > table > tbody > tr:nth-child(2) > td.title > div > a')
 # print(title)
 
 #old_content > table > tbody > tr:nth-child(2) > td:nth-child(1) > img
@@ -21,3 +24,9 @@ for movie in movies:
         star = movie.select_one('td.point').text
         rank = movie.select_one('td.ac > img')['alt']
         print(rank, title, star)
+
+        # db.movies.insert_one({
+        #     'rank': rank,
+        #     'title': title,
+        #     'star': star
+        #     })
