@@ -100,6 +100,51 @@
         function close_box() {
             $('#post-box').hide();
         }
+
+
+        $(document).ready(function () {
+            listing();
+        });
+
+        function listing() {
+            console.log('화면 로딩 후 잘 실행되었습니다');
+            $.ajax({
+                type: "GET",
+                url: "http://spartacodingclub.shop/web/api/movie",
+                data: {},
+                success: function (response) {
+                    $('#card-box').empty();
+
+                    let info = response.movies;
+
+                    for (let i = 0; i < 4; i++) {
+                        let comment = info[i].comment;
+                        let desc = info[i].desc;
+                        let image = info[i].image;
+                        let star = info[i].star;
+                        let title = info[i].title;
+
+                        let star_image = "⭐".repeat(star);
+
+                        let temp_html = ` <div class="col">
+                                            <div class="card h-100">
+                                                <img src=${image} class="card-img-top" alt="...">
+                                                <div class="card-body">
+                                                    <h5 class="card-titl>${title}</h5>
+                                                    <p class="card-text">${desc}</p>
+                                                    <p>${star_image}</p>
+                                                    <p class="mycomment">${comment}</p>
+
+                                                </div>
+                                            </div>`
+
+                        $('#card-box').append(temp_html)
+                    }
+                }
+                })
+            }
+
+
     </script>
 
 </head>
